@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+    "-//Hibernate/Hibernate Configuration DTD//EN"
+    "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+        <property name="hibernate.connection.password">xxx</property>
+        <property name="hibernate.connection.url" >jdbc:postgresql://xxx.xxx.xxx:5433/mmeteodb</property>
+        <property name="hibernate.connection.username">xxx</property>
+        <property name="hibernate.default_schema">public</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+        
+        <property name="hibernate.hbm2ddl.auto">update</property>
+        <property name="hibernate.show_sql">false</property>
+        
+        <property name="hibernate.c3p0.min_size">1</property>
+		<property name="hibernate.c3p0.max_size">5</property>
+  		<property name="hibernate.c3p0.timeout">0</property>
+  		<property name="hibernate.c3p0.max_statements">0</property>
+  		<property name="hibernate.c3p0.idle_test_period">3000</property>
+  		
+  		<mapping class="com.naio.mmeteopersistence.entity.Naio"/>
+  		<mapping class="com.naio.mmeteopersistence.entity.Customer"/>
+  		<mapping class="com.naio.mmeteopersistence.entity.MeteoData"/>
+  		<mapping class="com.naio.mmeteopersistence.entity.MeteoDataArchive"/>
+  		<mapping class="com.naio.mmeteopersistence.entity.MMeteoBox"/>
+  		<mapping class="com.naio.mmeteopersistence.entity.MMeteoBoxData"/>
+  		<mapping class="com.naio.mmeteopersistence.entity.Sms"/>
+  		<mapping class="com.naio.mmeteopersistence.entity.SmsArchive"/>
+    </session-factory>
+</hibernate-configuration>

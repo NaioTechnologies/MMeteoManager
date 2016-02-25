@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry including="**/*.java" kind="src" path="src/main/java"/>
+	<classpathentry excluding="**/*.java" kind="src" path="src/main/resources"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
+	<classpathentry kind="lib" path="E:/dev/workspace/MMeteoManager/lib/c3p0-0.9.5-pre8.jar"/>
+	<classpathentry kind="lib" path="E:/dev/workspace/MMeteoManager/lib/mchange-commons-java-0.2.7.jar"/>
+	<classpathentry kind="lib" path="E:/dev/workspace/MMeteoManager/lib/mail.jar"/>
+	<classpathentry kind="lib" path="E:/dev/workspace/MMeteoPersistence/lib/antlr-2.7.7.jar"/>
+	<classpathentry kind="lib" path="E:/dev/workspace/MMeteoPersistence/lib/dom4j-1.6.1.jar"/>
+	<classpathentry kind="lib" path="E:/dev/workspace/MMeteoPersistence/lib/hibernate-commons-annotations-4.0.4.Final.jar"/>
+	<classpathentry kind="lib" path="E:/dev/workspace/MMeteoPersistence/lib/hibernate-core-4.3.5.Final.jar"/>
+	<classpathentry kind="lib" path="E:/dev/workspace/MMeteoPersistence/lib/hibernate-jpa-2.1-api-1.0.0.Final.jar"/>
+	<classpathentry kind="lib" path="E:/dev/workspace/MMeteoPersistence/lib/jandex-1.1.0.Final.jar"/>
+	<classpathentry kind="lib" path="E:/dev/workspace/MMeteoPersistence/lib/javassist-3.18.1-GA.jar"/>
+	<classpathentry kind="lib" path="E:/dev/workspace/MMeteoPersistence/lib/jboss-logging-3.1.3.GA.jar"/>
+	<classpathentry kind="lib" path="E:/dev/workspace/MMeteoPersistence/lib/jboss-logging-annotations-1.2.0.Beta1.jar"/>
+	<classpathentry kind="lib" path="E:/dev/workspace/MMeteoPersistence/lib/jboss-transaction-api_1.2_spec-1.0.0.Final.jar"/>
+	<classpathentry kind="lib" path="E:/dev/workspace/MMeteoPersistence/lib/joda-time-2.3.jar"/>
+	<classpathentry kind="lib" path="E:/dev/workspace/MMeteoPersistence/lib/log4j-1.2.17.jar"/>
+	<classpathentry kind="lib" path="E:/dev/workspace/MMeteoPersistence/lib/postgresql-9.3-1101.jdbc41.jar"/>
+	<classpathentry kind="lib" path="E:/dev/workspace/MMeteoManager/lib/jasperreports-5.6.0.jar"/>
+	<classpathentry kind="lib" path="E:/dev/workspace/MMeteoManager/lib/commons-logging-1.1.3.jar"/>
+	<classpathentry kind="lib" path="E:/dev/workspace/MMeteoManager/lib/jcommon-1.0.16.jar"/>
+	<classpathentry kind="lib" path="E:/dev/workspace/MMeteoManager/lib/jfreechart-1.0.13.jar"/>
+	<classpathentry kind="lib" path="E:/dev/workspace/MMeteoManager/lib/commons-collections-3.2.1.jar"/>
+	<classpathentry kind="lib" path="E:/dev/workspace/MMeteoManager/lib/commons-digester-2.1.jar"/>
+	<classpathentry kind="lib" path="E:/dev/workspace/MMeteoManager/lib/groovy-all-2.3.1.jar"/>
+	<classpathentry kind="lib" path="E:/dev/workspace/MMeteoManager/lib/itext-4.2.1.jar"/>
+	<classpathentry kind="lib" path="E:/dev/workspace/MMeteoManager/lib/mmeteo-persistence-1.0.2.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

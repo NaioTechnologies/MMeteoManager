@@ -1,0 +1,552 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="MeteoReport" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isTitleNewPage="true" uuid="f2e67288-3bd1-4942-8342-bbc6631ce9b0">
+	<property name="ireport.zoom" value="1.210000000000004"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="432"/>
+	<parameter name="minDate" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[1401098400000]]></defaultValueExpression>
+	</parameter>
+	<parameter name="maxDate" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[1801703200000]]></defaultValueExpression>
+	</parameter>
+	<parameter name="generationDate" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[(new Date()).getTime()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="imei" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["862170018447522"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+	c.social, c.name, c.address, c.postalcode, c.city, c.country, c.phonenumber as c_phonenumber, c.contactemail,
+	mb.imei, mb.phonenumber as mb_phonenumber, mb.mmeteodateversion, mb.softversion, mb.referencenaio, mb.clientphone1, mb.clientphone2, mb.clientphone3, mb.gpslat, mb.gpslon, mb.gpsalt,
+	mda.ts as ts, mda.data_temperature, mda.data_humidity, mda.humidity_min, mda.humidity_max, mda.temperature_min, mda.temperature_max
+FROM
+	customer c
+	RIGHT OUTER JOIN
+	mmeteo_box mb ON ( mb.customer = c.id )
+	LEFT OUTER JOIN
+	meteo_data_archive mda ON ( mda.imei = mb.imei AND mda.ts >= $P{minDate} AND mda.ts < $P{maxDate} )
+WHERE
+	mb.imei = $P{imei}
+ORDER BY
+	mda.ts;]]>
+	</queryString>
+	<field name="social" class="java.lang.String"/>
+	<field name="name" class="java.lang.String"/>
+	<field name="address" class="java.lang.String"/>
+	<field name="postalcode" class="java.lang.String"/>
+	<field name="city" class="java.lang.String"/>
+	<field name="country" class="java.lang.String"/>
+	<field name="c_phonenumber" class="java.lang.String"/>
+	<field name="contactemail" class="java.lang.String"/>
+	<field name="imei" class="java.lang.String"/>
+	<field name="mb_phonenumber" class="java.lang.String"/>
+	<field name="mmeteodateversion" class="java.lang.String"/>
+	<field name="softversion" class="java.lang.String"/>
+	<field name="referencenaio" class="java.lang.String"/>
+	<field name="clientphone1" class="java.lang.String"/>
+	<field name="clientphone2" class="java.lang.String"/>
+	<field name="clientphone3" class="java.lang.String"/>
+	<field name="gpslat" class="java.lang.Double"/>
+	<field name="gpslon" class="java.lang.Double"/>
+	<field name="gpsalt" class="java.lang.Double"/>
+	<field name="ts" class="java.lang.Long"/>
+	<field name="data_temperature" class="java.lang.Double"/>
+	<field name="data_humidity" class="java.lang.Double"/>
+	<field name="humidity_min" class="java.lang.Integer"/>
+	<field name="humidity_max" class="java.lang.Integer"/>
+	<field name="temperature_min" class="java.lang.Integer"/>
+	<field name="temperature_max" class="java.lang.Integer"/>
+	<variable name="gpslat" class="java.lang.Float">
+		<variableExpression><![CDATA[$F{gpslat}==null?43.563573f:$F{gpslat}.floatValue()]]></variableExpression>
+		<initialValueExpression><![CDATA[43.563573]]></initialValueExpression>
+	</variable>
+	<variable name="gts" class="java.util.Date" resetType="None">
+		<variableExpression><![CDATA[new Date( $F{ts}==null?new Long(0):$F{ts}.longValue() )]]></variableExpression>
+	</variable>
+	<group name="Chart" isStartNewPage="true">
+		<groupExpression><![CDATA["Chart"]]></groupExpression>
+		<groupHeader>
+			<band height="522">
+				<multiAxisChart>
+					<chart evaluationTime="Report">
+						<reportElement x="13" y="13" width="784" height="496" uuid="637a3d40-fc8c-4375-9c2f-136f32171efd"/>
+						<chartTitle/>
+						<chartSubtitle/>
+						<chartLegend position="Bottom"/>
+					</chart>
+					<multiAxisPlot>
+						<plot orientation="Horizontal"/>
+						<axis position="leftOrTop">
+							<timeSeriesChart>
+								<chart>
+									<reportElement x="0" y="0" width="0" height="0" backcolor="#FFFFFF" uuid="d0aa11ec-b5b3-4fa7-8397-f6e973e2f74c"/>
+									<chartTitle color="#000000"/>
+									<chartSubtitle color="#000000"/>
+									<chartLegend textColor="#000000" backgroundColor="#FFFFFF" position="Bottom"/>
+								</chart>
+								<timeSeriesDataset timePeriod="Milisecond">
+									<timeSeries>
+										<seriesExpression><![CDATA["Température C°"]]></seriesExpression>
+										<timePeriodExpression><![CDATA[$V{gts}]]></timePeriodExpression>
+										<valueExpression><![CDATA[$F{data_temperature}]]></valueExpression>
+										<labelExpression><![CDATA["C°"]]></labelExpression>
+									</timeSeries>
+									<timeSeries>
+										<seriesExpression><![CDATA["Min. Température"]]></seriesExpression>
+										<timePeriodExpression><![CDATA[$V{gts}]]></timePeriodExpression>
+										<valueExpression><![CDATA[$F{temperature_min}]]></valueExpression>
+										<labelExpression><![CDATA["Min C°"]]></labelExpression>
+									</timeSeries>
+									<timeSeries>
+										<seriesExpression><![CDATA["Max. Température"]]></seriesExpression>
+										<timePeriodExpression><![CDATA[$V{gts}]]></timePeriodExpression>
+										<valueExpression><![CDATA[$F{temperature_max}]]></valueExpression>
+										<labelExpression><![CDATA["Max. C°"]]></labelExpression>
+									</timeSeries>
+								</timeSeriesDataset>
+								<timeSeriesPlot isShowShapes="false">
+									<plot orientation="Horizontal">
+										<seriesColor seriesOrder="0" color="#FF0000"/>
+										<seriesColor seriesOrder="1" color="#CC6600"/>
+										<seriesColor seriesOrder="2" color="#CC6600"/>
+									</plot>
+									<timeAxisFormat>
+										<axisFormat/>
+									</timeAxisFormat>
+									<valueAxisLabelExpression><![CDATA["C°"]]></valueAxisLabelExpression>
+									<valueAxisFormat>
+										<axisFormat labelColor="#FF0000" tickLabelColor="#FF0000" verticalTickLabels="false"/>
+									</valueAxisFormat>
+									<domainAxisMinValueExpression><![CDATA[new Date($P{minDate})]]></domainAxisMinValueExpression>
+									<domainAxisMaxValueExpression><![CDATA[new Date($P{maxDate})]]></domainAxisMaxValueExpression>
+									<rangeAxisMinValueExpression><![CDATA[-20]]></rangeAxisMinValueExpression>
+									<rangeAxisMaxValueExpression><![CDATA[60]]></rangeAxisMaxValueExpression>
+								</timeSeriesPlot>
+							</timeSeriesChart>
+						</axis>
+						<axis position="rightOrBottom">
+							<timeSeriesChart>
+								<chart>
+									<reportElement x="0" y="0" width="0" height="0" backcolor="#FFFFFF" uuid="78461e5f-a629-4d29-8daf-08dd3d810653"/>
+									<chartTitle color="#000000"/>
+									<chartSubtitle color="#000000"/>
+									<chartLegend textColor="#000000" backgroundColor="#FFFFFF" position="Bottom"/>
+								</chart>
+								<timeSeriesDataset timePeriod="Milisecond">
+									<timeSeries>
+										<seriesExpression><![CDATA["Humidité %"]]></seriesExpression>
+										<timePeriodExpression><![CDATA[$V{gts}]]></timePeriodExpression>
+										<valueExpression><![CDATA[$F{data_humidity}]]></valueExpression>
+										<labelExpression><![CDATA["% H"]]></labelExpression>
+									</timeSeries>
+									<timeSeries>
+										<seriesExpression><![CDATA["Min. Humidité"]]></seriesExpression>
+										<timePeriodExpression><![CDATA[$V{gts}]]></timePeriodExpression>
+										<valueExpression><![CDATA[$F{humidity_min}]]></valueExpression>
+										<labelExpression><![CDATA["Min. % H"]]></labelExpression>
+									</timeSeries>
+									<timeSeries>
+										<seriesExpression><![CDATA["Max. Humidité"]]></seriesExpression>
+										<timePeriodExpression><![CDATA[$V{gts}]]></timePeriodExpression>
+										<valueExpression><![CDATA[$F{humidity_max}]]></valueExpression>
+										<labelExpression><![CDATA["Max. % H"]]></labelExpression>
+									</timeSeries>
+								</timeSeriesDataset>
+								<timeSeriesPlot isShowShapes="false">
+									<plot orientation="Horizontal">
+										<seriesColor seriesOrder="0" color="#00CCFF"/>
+										<seriesColor seriesOrder="1" color="#004C7F"/>
+										<seriesColor seriesOrder="2" color="#004C7F"/>
+									</plot>
+									<timeAxisFormat>
+										<axisFormat/>
+									</timeAxisFormat>
+									<valueAxisLabelExpression><![CDATA["% H"]]></valueAxisLabelExpression>
+									<valueAxisFormat>
+										<axisFormat labelColor="#0099FF" tickLabelColor="#0099FF" verticalTickLabels="false"/>
+									</valueAxisFormat>
+									<domainAxisMinValueExpression><![CDATA[new Date($P{minDate})]]></domainAxisMinValueExpression>
+									<domainAxisMaxValueExpression><![CDATA[new Date($P{maxDate})]]></domainAxisMaxValueExpression>
+									<rangeAxisMinValueExpression><![CDATA[0]]></rangeAxisMinValueExpression>
+									<rangeAxisMaxValueExpression><![CDATA[100]]></rangeAxisMaxValueExpression>
+								</timeSeriesPlot>
+							</timeSeriesChart>
+						</axis>
+					</multiAxisPlot>
+				</multiAxisChart>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="Detail" isStartNewPage="true" isReprintHeaderOnEachPage="true">
+		<groupExpression><![CDATA["Detail"]]></groupExpression>
+		<groupHeader>
+			<band height="14">
+				<staticText>
+					<reportElement x="1" y="1" width="122" height="11" uuid="249ea227-5c0f-4c88-b8fd-4ee6144204b0"/>
+					<textElement textAlignment="Center">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Date]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="123" y="1" width="40" height="11" uuid="945bfdb0-a963-483f-b9a9-891c9c9c148d"/>
+					<textElement textAlignment="Center">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[C°]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="163" y="1" width="40" height="11" uuid="c12ba369-118e-47ab-875b-79e525eb7e74"/>
+					<textElement textAlignment="Center">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[H %]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="203" y="1" width="40" height="11" uuid="3ed2f83b-2f15-4f54-85fe-de6d4199f4b3"/>
+					<textElement textAlignment="Center">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Min. C°]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="243" y="1" width="40" height="11" uuid="0fbd6be5-bb06-44a5-a18a-5ffa57f526f0"/>
+					<textElement textAlignment="Center">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Max. C°]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="283" y="1" width="40" height="11" uuid="322a4c5c-fa4a-4854-af67-f3df1d181be8"/>
+					<textElement textAlignment="Center">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Min. H]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="323" y="1" width="40" height="11" uuid="644f8e98-aaec-4af8-9786-91d5d15e46b1"/>
+					<textElement textAlignment="Center">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Max. H]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="522" splitType="Stretch">
+			<image scaleImage="RealSize">
+				<reportElement x="748" y="4" width="49" height="160" uuid="36fa7b0c-a880-4691-8574-744b917b174e"/>
+				<imageExpression><![CDATA["naio.jpg"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="12" y="4" width="191" height="114" uuid="51b592c2-5e93-42b2-a87a-e71f1652c94a"/>
+				<imageExpression><![CDATA["mmeteo.jpg"]]></imageExpression>
+			</image>
+			<rectangle>
+				<reportElement x="223" y="3" width="519" height="228" uuid="cc0e5e11-2ea8-4530-872a-a0d971f84bcb"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="395" y="241" width="347" height="251" isRemoveLineWhenBlank="true" uuid="c85a1bf1-ed3c-40c8-afdf-f1e412b956d9"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="19" y="132" width="93" height="20" uuid="0955da3c-566f-4518-ab24-febe8a0fa2f2"/>
+				<text><![CDATA[Relevés Méteo]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy HH:mm:ss">
+				<reportElement x="48" y="152" width="106" height="20" uuid="fb1288c1-5d31-400e-8667-7a2208bd115c"/>
+				<textFieldExpression><![CDATA[new Date($P{minDate})]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="19" y="152" width="29" height="20" uuid="13391aef-4d7b-43fc-b51c-f9377626b9c4"/>
+				<text><![CDATA[Du :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="19" y="172" width="29" height="20" uuid="f0bbc55b-3144-42d8-8b3e-9a64715381b1"/>
+				<text><![CDATA[Au :]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy HH:mm:ss">
+				<reportElement x="48" y="172" width="106" height="20" uuid="9d2c1abe-71e6-4c32-bfb0-624ec40a2872"/>
+				<textFieldExpression><![CDATA[new Date($P{maxDate})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="294" y="26" width="327" height="20" uuid="0b03cba0-068b-44d3-8ce9-118ad4cc1a50"/>
+				<textFieldExpression><![CDATA[$F{social}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="294" y="50" width="327" height="20" uuid="7dfd5ee1-33d5-49f9-8aa1-41f5f566d6a3"/>
+				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="294" y="74" width="437" height="52" uuid="46e958fd-35b4-47c7-80e3-5207fc82535c"/>
+				<textFieldExpression><![CDATA[$F{address}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="294" y="130" width="232" height="20" uuid="12d2432a-4fe0-4eae-9843-73a781ac5f72"/>
+				<textFieldExpression><![CDATA[$F{postalcode} + " " + $F{city}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="473" y="274" width="96" height="20" uuid="4ec15b1c-b4bb-4765-9290-a06374cb6203"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{mb_phonenumber}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="473" y="297" width="148" height="20" uuid="409ce0d6-8ddf-4166-bd1e-ef9549d2081e"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{imei}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="473" y="345" width="148" height="20" uuid="7b9cefc1-bd95-4695-885e-4d1cc2b2c77e"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{mmeteodateversion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="473" y="321" width="148" height="20" uuid="2731ae78-d294-4f42-949f-0454abeb2f2d"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{softversion}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="399" y="273" width="74" height="20" uuid="43b7fe0d-6ab6-475d-b183-07eb653e4553"/>
+				<text><![CDATA[Tél. :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="399" y="297" width="74" height="20" uuid="0ef2e268-5585-477e-b67b-4bcec6664fda"/>
+				<text><![CDATA[IMEI :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="399" y="321" width="74" height="20" uuid="d17bbe80-1b2d-4f8a-8a3a-d0607af725f4"/>
+				<text><![CDATA[Version :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="399" y="345" width="74" height="20" uuid="46173833-7197-4838-9eb3-20364552b049"/>
+				<text><![CDATA[Date Version :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="399" y="252" width="254" height="20" uuid="bf9e09bf-db09-4264-9dd9-a3f503633b63"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Votre Monsieur Météo :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="234" y="4" width="292" height="20" uuid="2eb67789-6add-4811-b8d5-be6932a8b325"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Vos coordonnées :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="294" y="154" width="232" height="20" uuid="3fdfc0f2-b5d9-44d0-b6f3-2dd964c4d3ac"/>
+				<textFieldExpression><![CDATA[$F{c_phonenumber}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="234" y="26" width="54" height="20" uuid="550846cb-d326-45f8-b5b6-fd52e533e48c"/>
+				<text><![CDATA[Raison :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="234" y="50" width="54" height="20" uuid="e555d5cd-596c-4ad6-9e74-68fc74dbec44"/>
+				<text><![CDATA[Nom :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="234" y="74" width="54" height="20" uuid="43753820-3b80-46bb-bc8d-28e2cf2b7bb5"/>
+				<text><![CDATA[Adresse :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="234" y="130" width="54" height="20" uuid="f33c9099-58ec-44db-aec7-68d39746c9d1"/>
+				<text><![CDATA[CP Ville :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="234" y="154" width="54" height="20" uuid="84a70381-7c6c-4d6d-8c64-e0546910a031"/>
+				<text><![CDATA[Tél. :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="583" y="503" width="85" height="16" uuid="b423580a-8239-4332-a9f9-7b1f2bac14cf"/>
+				<text><![CDATA[Page générée le :]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy HH:mm:ss" isBlankWhenNull="true">
+				<reportElement x="668" y="503" width="129" height="16" uuid="f8e6b549-e980-47b2-892c-33d9ec0114c1"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[new Date($P{generationDate})]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="234" y="177" width="54" height="20" uuid="62df36a5-f649-4bc5-b435-b63331187344"/>
+				<text><![CDATA[Email :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="294" y="177" width="437" height="47" uuid="f2bd0dc5-8dd5-4eb7-afb1-339acff77c00"/>
+				<textFieldExpression><![CDATA[$F{contactemail}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="399" y="369" width="74" height="20" uuid="3acdaa03-c5e3-4db5-bcdc-f5e0e2a00586"/>
+				<text><![CDATA[Abonné 1 :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="399" y="392" width="74" height="20" uuid="0535949f-21f4-4289-b1af-ca88dac71672"/>
+				<text><![CDATA[Abonné 2 :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="399" y="415" width="74" height="20" uuid="cdb12dc4-51b9-4e54-8dd4-53b4f29a2992"/>
+				<text><![CDATA[Abonné 3 :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="473" y="369" width="148" height="20" uuid="dca7efd9-3c15-49e0-8644-db4bb96aa212"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{clientphone1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="473" y="392" width="148" height="20" uuid="837d6098-93e7-41ce-8a49-972e7307f232"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{clientphone2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="473" y="415" width="148" height="20" uuid="c36c8414-30b2-41ef-a57f-96ae41dd6a6e"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{clientphone3}]]></textFieldExpression>
+			</textField>
+			<componentElement>
+				<reportElement x="13" y="241" width="373" height="252" isPrintInFirstWholeBand="true" uuid="62de640a-5b91-46f9-97a3-22f278a5a0f0"/>
+				<mp:map xmlns:mp="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" evaluationTime="Report" mapType="hybrid" mapScale="2" imageType="jpg">
+					<mp:latitudeExpression><![CDATA[$F{gpslat}==null?43.563573f:$F{gpslat}.floatValue()]]></mp:latitudeExpression>
+					<mp:longitudeExpression><![CDATA[$F{gpslon}==null?1.491630f:$F{gpslon}.floatValue()]]></mp:longitudeExpression>
+					<mp:zoomExpression><![CDATA[18]]></mp:zoomExpression>
+					<mp:languageExpression><![CDATA["fr"]]></mp:languageExpression>
+					<mp:markerData>
+						<dataset/>
+						<mp:item>
+							<mp:itemProperty name="latitude">
+								<valueExpression><![CDATA[$F{gpslat}==null?43.563573f:$F{gpslat}.floatValue()]]></valueExpression>
+							</mp:itemProperty>
+							<mp:itemProperty name="longitude">
+								<valueExpression><![CDATA[$F{gpslon}==null?1.49163f:$F{gpslon}.floatValue()]]></valueExpression>
+							</mp:itemProperty>
+						</mp:item>
+					</mp:markerData>
+				</mp:map>
+			</componentElement>
+			<staticText>
+				<reportElement x="13" y="515" width="25" height="0" uuid="ea589c11-6714-4352-bd78-ab367b343dc6"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Lat. :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="37" y="515" width="56" height="0" uuid="6b1339a3-532c-49fb-a1d3-1259d36f3262"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{gpslat}==null?43.563573f:$F{gpslat}.floatValue()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="118" y="515" width="56" height="0" uuid="bb8a568a-ffcd-4ca7-8d4e-01f969cda865"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{gpslon}==null?1.491630f:$F{gpslon}.floatValue()]]></textFieldExpression>
+			</textField>
+			<ellipse>
+				<reportElement mode="Opaque" x="196" y="364" width="5" height="5" forecolor="#FF0000" backcolor="#FF0000" uuid="c5435508-fcf9-412b-ae69-222638afb305"/>
+			</ellipse>
+			<staticText>
+				<reportElement x="400" y="439" width="74" height="20" uuid="d223fb1c-4047-41e4-950c-73bfc5dd89de"/>
+				<text><![CDATA[GPS Lat. :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="400" y="463" width="74" height="20" uuid="1273c239-30d6-4dc3-983d-5bbc9cb954d4"/>
+				<text><![CDATA[GPS Lon. :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="473" y="439" width="65" height="20" uuid="c9011ab8-5f63-49f2-807f-16c88fa25cc8"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{gpslat}==null?43.563573f:$F{gpslat}.floatValue()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement x="474" y="463" width="65" height="20" uuid="22e6d893-e9b6-4010-8f66-afb5a70c185c"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{gpslon}==null?1.491630f:$F{gpslon}.floatValue()]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="12" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="12" splitType="Stretch">
+			<printWhenExpression><![CDATA[new Boolean( $F{ts}!=null )]]></printWhenExpression>
+			<textField pattern="dd/MM/yyyy HH.mm.ss">
+				<reportElement x="2" y="0" width="122" height="12" uuid="6fdea7d5-f010-43bb-969f-054c8151fc12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{gts}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.0">
+				<reportElement x="124" y="0" width="40" height="12" uuid="8c637116-4303-4d08-9f79-1d0bfeb58fe7"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{data_temperature}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.0">
+				<reportElement x="164" y="0" width="40" height="12" uuid="e450d95c-6f76-431d-9c94-f53df477b7ce"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{data_humidity}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.0">
+				<reportElement x="204" y="0" width="40" height="12" uuid="eeb10bb1-d24d-48f5-9ef0-8cb130ead24a"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{temperature_min}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.0">
+				<reportElement x="244" y="0" width="40" height="12" uuid="8078eebd-6357-4bcf-b3ab-77f11b379ae2"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{temperature_max}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.0">
+				<reportElement x="284" y="0" width="40" height="12" uuid="f9667b93-bd2f-48c0-80a5-89be5cff51f9"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{humidity_min}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.0">
+				<reportElement x="324" y="0" width="40" height="12" uuid="5528d055-948b-41de-bcb6-82831f56f42f"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{humidity_max}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="21" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy HH:mm:ss">
+				<reportElement x="99" y="0" width="193" height="20" uuid="81da0f66-4d3d-497f-b5e1-b751adc9a37b"/>
+				<textFieldExpression><![CDATA[new Date($P{generationDate})]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="2" y="0" width="97" height="20" uuid="7834b4ab-5488-4e2a-ba19-4e049af55edb"/>
+				<text><![CDATA[Page générée le :]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="13" splitType="Stretch"/>
+	</summary>
+</jasperReport>

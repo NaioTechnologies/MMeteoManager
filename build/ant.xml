@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="create_run_jar" name="Create Runnable Jar for Project MMeteoManager">
+    <!--this file was created by Eclipse Runnable JAR Export Wizard-->
+    <!--ANT 1.7 is required                                        -->
+    <target name="create_run_jar">
+                
+        <property name="version.num" value="2.0.6" />
+   		
+   		<buildnumber file="build.num"/>
+
+   		<tstamp>
+     		<format property="TODAY" pattern="yyyy-MM-dd HH:mm:ss" />
+   		</tstamp>
+   		
+        <jar destfile="E:/dev/workspace/MMeteoManager/build/mmeteo-manager-${version.num}.jar" filesetmanifest="mergewithoutmain">
+            <manifest>
+                <attribute name="Main-Class" value="com.naio.mmeteomanager.EntryPoint"/>
+                <attribute name="Class-Path" value="."/>
+                <attribute name="Built-By" value="${user.name}"/>
+                <attribute name="Implementation-Version" value="${version.num}-b${build.number}"/>   
+      			<attribute name="Built-Date" value="${TODAY}"/>
+            </manifest>
+            
+            <zipgroupfileset dir="../lib" includes="*.jar" excludes=""/>
+            <zipgroupfileset dir="../../MMeteoPersistence/lib" includes="*.jar" excludes=""/>
+            
+            <fileset dir="E:/dev/workspace/MMeteoManager/bin"/>
+
+            
+        </jar>
+    </target>
+</project>
